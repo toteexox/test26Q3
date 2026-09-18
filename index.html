@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Content</title>
+    <title>2026 3분기 역량평가</title>
     <style>
         :root { 
             --primary: #4285f4; --bg: #f4f5f7; --border: #eee; --white: #fff; --text: #3c4043; 
@@ -74,7 +74,6 @@
 
         .section-title { font-size: 24px; color: var(--text); margin-bottom: 30px; cursor: pointer; font-weight: 800; text-align: center; padding: 10px; background: #fff; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 
-        /* 채팅 말풍선 UI 스타일 */
         .chat-row { display: flex; width: 100%; margin-bottom: 18px; align-items: flex-end; gap: 10px; }
         .chat-left { justify-content: flex-start; }
 
@@ -85,14 +84,12 @@
 
         .card { position: relative; padding: 16px 22px; border-radius: 20px; max-width: 75%; display: flex; flex-direction: column; border: 2px solid transparent; box-shadow: 0 2px 6px rgba(0,0,0,0.04); transition: 0.2s; cursor: pointer; overflow: hidden; align-items: flex-start; border-bottom-left-radius: 4px; }
         
-        /* 등장인물별 말풍선 배경/테두리 파스텔톤 */
         .bg-E { background-color: #e8f0fe; border-color: #d2e3fc; }
         .bg-BF { background-color: #e6f4ea; border-color: #ceead6; }
         .bg-S { background-color: #fce8e6; border-color: #fad2cf; }
 
         .card.active-play, .card.playing { border-color: var(--primary) !important; box-shadow: 0 4px 12px rgba(66, 133, 244, 0.25) !important; background-color: #fff !important; }
 
-        /* 재생 버튼을 이름 옆으로 이동 (justify-content: flex-start; gap: 6px;) */
         .bubble-header { display: flex; justify-content: flex-start; align-items: center; width: 100%; margin-bottom: 8px; gap: 6px; }
 
         .speaker-name { font-size: 13px; font-weight: 800; opacity: 0.85; }
@@ -184,7 +181,7 @@
 
     <script>
         const studyData = {
-            title: "Emily in Paris | Crazy News 💬",
+            title: "Emily in Paris | 💬",
             audio: "audio.wav",
             sentences: [
                 {
@@ -203,6 +200,15 @@
                     trans: "안녕.",
                     chunks: [
                         { text: "Hey,", s: 0.500, e: 4.270 }
+                    ]
+                },
+                {
+                    speaker: 'E',
+                    start: 4.530, end: 5.280,
+                    ipa: "/wʌt ˈhæpənd?/",
+                    trans: "무슨 일 있어?",
+                    chunks: [
+                        { text: "What happened?", s: 4.530, e: 5.280 }
                     ]
                 },
                 {
@@ -241,7 +247,7 @@
                     ipa: "/aɪ hæv sʌm ˈkreɪzi nuːz. ˈmædəlɪnz ˈprɛɡnənt/",
                     trans: "나 정말 엄청난 소식이 있어. 매들린이 임신했대.",
                     chunks: [
-                        { text: "I have some crazy news", s: 10.640, e: 13.190 },
+                        { text: "I have some crazy news.", s: 10.640, e: 13.190 },
                         { text: "Madeline's pregnant.", s: 13.190, e: 14.500 }
                     ]
                 },
@@ -293,8 +299,8 @@
                     chunks: [
                         { text: "But now", s: 21.180, e: 21.620 },
                         { text: "that she's pregnant,", s: 21.620, e: 22.430 },
-                        { text: "she's decided she's not", s: 22.430, e: 24.150 },
-                        { text: "gonna take the job in Paris.", s: 24.150, e: 26.570 }
+                        { text: "she's decided she's not", s: 22.430, e: 24.180 },
+                        { text: "gonna take the job in Paris.", s: 24.180, e: 26.570 }
                     ]
                 },
                 {
@@ -349,8 +355,8 @@
                     ipa: "/aɪ noʊ ɪts ˈkreɪzi, bʌt wɛn wɪl wiː ɡɛt ə tʃæns laɪk ðɪs/",
                     trans: "말도 안 되는 거 아는데, 우리한테 이런 기회가 언제 또 오겠어?",
                     chunks: [
-                        { text: "I know", s: 42.970, e: 43.290 },
-                        { text: "it's crazy,", s: 43.290, e: 44.070 },
+                        { text: "I know", s: 42.970, e: 43.210 },
+                        { text: "it's crazy,", s: 43.210, e: 44.070 },
                         { text: "but", s: 44.070, e: 44.790 },
                         { text: "when will we get a", s: 44.790, e: 45.360 },
                         { text: "chance like this?", s: 45.360, e: 46.710 }
@@ -358,25 +364,25 @@
                 },
                 {
                     speaker: 'BF',
-                    start: 46.710, end: 48.450,
+                    start: 46.710, end: 48.350,
                     ipa: "/juː doʊnt spiːk frɛntʃ/",
                     trans: "너 불어 한마디도 못 하잖아.",
                     chunks: [
-                        { text: "You don't speak French", s: 46.710, e: 48.450 }
+                        { text: "You don't speak French", s: 46.710, e: 48.350 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 48.450, end: 52.460,
+                    start: 48.350, end: 52.460,
                     ipa: "/feɪk ɪt tɪl juː meɪk ɪt/",
                     trans: "될 때까지 아는 척 버텨보는 거지 뭐!",
                     chunks: [
-                        { text: "Fake it", s: 48.450, e: 48.700 },
-                        { text: "till you make it.", s: 48.700, e: 52.460 }
+                        { text: "Fake it", s: 48.350, e: 48.730 },
+                        { text: "till you make it.", s: 48.730, e: 52.460 }
                     ]
                 },
                 {
-                    speaker: 'BF',
+                    speaker: 'E',
                     start: 52.460, end: 55.820,
                     ipa: "/oʊ, aɪm nɑːt ˈwɜːrid. ɪts ðə frɛntʃ huː ʃʊd biː ˈwɜːrid/",
                     trans: "난 전혀 걱정 안 돼. 걱정해야 할 건 오히려 프랑스인들이지.",
@@ -395,7 +401,7 @@
               statusIcon = document.getElementById('global-status-icon'),
               topBtn = document.getElementById('scroll-top-btn');
         
-        let isShadowing = false, currentRepeat = 0, stopTime = 0, isAutoPlaying = false;
+        let isShadowing = false, currentRepeat = 0, stopTime = 0, isContinuousPlay = false;
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 150) topBtn.style.display = 'flex';
@@ -440,14 +446,12 @@
                 const chunks = item.chunks.map(c => `<span class="chunk" data-s="${c.s}" data-e="${c.e}">${c.text}</span>`).join(' ');
                 const content = `<div class="text-content"><div class="sentence-eng">${chunks}</div><div class="ipa-text">${item.ipa}</div><div class="trans-text">${item.trans}</div></div>`;
                 
-                // 모든 말풍선을 왼쪽 정렬로 통일
                 const alignClass = 'chat-left';
                 const bgClass = `bg-${item.speaker}`;
                 const avatarClass = `avatar-${item.speaker}`;
                 const nameClass = `name-${item.speaker}`;
                 const speakerName = item.speaker === 'E' ? 'Emily' : item.speaker === 'BF' ? 'Boyfriend' : 'Server';
 
-                // 헤더 부분에서 이름(speakerName) 옆에 바로 play-btn이 오도록 배치
                 const header = `
                     <div class="bubble-header">
                         <span class="speaker-name ${nameClass}">${speakerName}</span>
@@ -505,16 +509,15 @@
         });
 
         function toggleAutoPlayAll(titleEl) {
-            if (isAutoPlaying) stopAll();
-            else { 
-                stopAll(); isAutoPlaying = true; 
+            if (isContinuousPlay) {
+                stopAll();
+            } else { 
+                stopAll(); 
+                isContinuousPlay = true; 
                 statusIcon.innerText = document.getElementById('float-play-icon').innerText = "⏸️";
-                const first = displayArea.querySelector('.card'); 
-                if (first) { 
-                    first.classList.add('active-play', 'playing');
-                    scrollToActive(first);
-                    playPart(parseFloat(first.dataset.start), parseFloat(first.dataset.end));
-                } 
+                stopTime = 0; 
+                player.currentTime = 0; 
+                player.play(); 
             }
         }
 
@@ -522,13 +525,23 @@
             clearTimeout(window.shadowTimer); 
             const rate = player.playbackRate;
             
-            stopTime = e - (0.02 * rate); 
-            player.currentTime = Math.max(0, s - (0.05 * rate)); 
+            // 시작 시간은 항상 0.05초 여유 있게 당겨서 시작
+            let startPoint = Math.max(0, s - (0.05 * rate)); 
+            let endPoint = e;
+
+            // ★ 원래 길이가 충분히 긴 문장(0.8초 초과)일 때만 끝을 0.15초 앞당겨서 다음 대사 겹침 방지
+            if ((e - s) > 0.8) {
+                endPoint = e - (0.15 * rate); 
+            }
+
+            stopTime = endPoint; 
+            player.currentTime = startPoint; 
             player.play(); 
         }
 
         function stopAll() { 
-            player.pause(); isAutoPlaying = false; 
+            player.pause(); 
+            isContinuousPlay = false; 
             statusIcon.innerText = document.getElementById('float-play-icon').innerText = "▶️";
             currentRepeat = 0; stopTime = 0; clearTimeout(window.shadowTimer);
             document.getElementById('current-count').innerText = document.getElementById('float-count-label').innerText = '';
@@ -538,16 +551,39 @@
         }
 
         player.addEventListener('timeupdate', () => {
-            if (stopTime > 0 && player.currentTime >= stopTime) {
+            if (isContinuousPlay) {
+                const ct = player.currentTime;
+                const cards = document.querySelectorAll('.card');
+                let currentActive = null;
+                
+                cards.forEach(card => {
+                    const start = parseFloat(card.dataset.start);
+                    const end = parseFloat(card.dataset.end);
+                    if (ct >= start && ct <= end) {
+                        currentActive = card;
+                    }
+                });
+
+                if (currentActive) {
+                    if (!currentActive.classList.contains('playing')) {
+                        document.querySelectorAll('.card.playing').forEach(c => c.classList.remove('playing', 'active-play'));
+                        currentActive.classList.add('playing', 'active-play');
+                        scrollToActive(currentActive);
+                    }
+                } else {
+                    document.querySelectorAll('.card.playing').forEach(c => c.classList.remove('playing', 'active-play'));
+                }
+            } else if (stopTime > 0 && player.currentTime >= stopTime) {
                 player.pause(); stopTime = 0; 
                 const active = document.querySelector('.card.playing');
                 if (active) { 
                     if (isShadowing) handleShadowProcess(active); 
-                    else if (isAutoPlaying) handleNext(active); 
-                    else active.classList.remove('playing'); 
+                    else active.classList.remove('playing', 'active-play'); 
                 }
             }
         });
+
+        player.addEventListener('ended', stopAll);
 
         function handleShadowProcess(el) {
             currentRepeat++; 
@@ -556,20 +592,7 @@
             const duration = (parseFloat(el.dataset.end) - parseFloat(el.dataset.start)) / rate;
             const waitTime = (duration + 1.5) * 1000;
             if (currentRepeat < limit) window.shadowTimer = setTimeout(() => playPart(parseFloat(el.dataset.start), parseFloat(el.dataset.end)), waitTime);
-            else { currentRepeat = 0; if (isAutoPlaying) window.shadowTimer = setTimeout(() => handleNext(el), waitTime); else el.classList.remove('playing'); }
-        }
-
-        function handleNext(el) {
-            const all = Array.from(displayArea.querySelectorAll('.card'));
-            const idx = all.indexOf(el); el.classList.remove('playing', 'active-play');
-            if (idx < all.length - 1) { 
-                const next = all[idx+1];
-                next.classList.add('active-play', 'playing');
-                scrollToActive(next);
-                window.shadowTimer = setTimeout(() => { 
-                    playPart(parseFloat(next.dataset.start), parseFloat(next.dataset.end));
-                }, 400); 
-            } else stopAll();
+            else { currentRepeat = 0; el.classList.remove('playing', 'active-play'); }
         }
 
         function setSpeed(s, btn) { 
