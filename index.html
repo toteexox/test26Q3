@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 3분기 역량평가</title>
+    <title>Learning Content</title>
     <style>
         :root { 
             --primary: #4285f4; --bg: #f4f5f7; --border: #eee; --white: #fff; --text: #3c4043; 
@@ -40,15 +40,20 @@
 
         .practice-bar { background: #fff; padding: 10px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); width: 100%; height: 50px; margin-top: 10px; }
         .left-controls { display: flex; align-items: center; gap: 12px; }
-        #global-status-icon { font-size: 18px; width: 24px; text-align: center; cursor: pointer; transition: 0.2s; }
+        
+        #global-status-icon, #global-skip-icon { font-size: 18px; text-align: center; cursor: pointer; transition: 0.2s; }
         
         .switch-box { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: bold; white-space: nowrap; }
-        .switch { position: relative; width: 40px; height: 22px; display: inline-block; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 22px; }
-        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider:before { transform: translateX(18px); }
-        input#shadow-mode:checked + .slider, input#float-shadow-mode:checked + .slider { background-color: var(--primary); }
+        
+        .text-toggle { position: relative; display: flex; align-items: center; width: 120px; height: 34px; background-color: #e2e3e5; border-radius: 17px; cursor: pointer; padding: 2px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); margin: 0; }
+        .text-toggle input { display: none; }
+        .text-toggle-slider { position: absolute; top: 2px; left: 2px; width: 58px; height: 30px; background-color: #fff; border-radius: 15px; transition: 0.3s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.1); z-index: 1; }
+        .text-toggle input:checked + .text-toggle-slider { transform: translateX(58px); background-color: var(--dull-blue); }
+        .text-toggle-texts { position: relative; z-index: 2; display: flex; width: 100%; justify-content: space-between; font-size: 13px; font-weight: 800; pointer-events: none; align-items: center; height: 100%; }
+        .text-toggle-texts span { flex: 1; text-align: center; transition: 0.3s ease; color: #95a5a6; }
+        .text-toggle input:not(:checked) ~ .text-toggle-texts .txt-left { color: var(--primary); }
+        .text-toggle input:checked ~ .text-toggle-texts .txt-left { color: #95a5a6; }
+        .text-toggle input:checked ~ .text-toggle-texts .txt-right { color: #fff; }
 
         #repeat-count { border: 1px solid #ddd; border-radius: 4px; padding: 0 4px; font-size: 13px; height: 28px; background: #fff; }
         #current-count { font-size: 14px; color: var(--primary); font-weight: 800; min-width: 45px; text-align: center; }
@@ -57,15 +62,15 @@
         .tab-btn:hover { background: #e8eaed; }
 
         .floating-menu {
-            display: none; position: fixed; top: 120px; right: 20px; width: 52px; background: white; border-radius: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            padding: 20px 0; flex-direction: column; align-items: center; gap: 22px; z-index: 1001; border: 1px solid var(--border);
+            display: none; position: fixed; top: 120px; right: 20px; width: auto; min-width: 60px; background: white; border-radius: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 20px 12px; flex-direction: column; align-items: center; gap: 22px; z-index: 1001; border: 1px solid var(--border);
         }
         .float-item { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
         .float-label { font-size: 11px; font-weight: 700; color: #9aa0a6; }
         .float-select { width: 44px; border: 1px solid #eee; border-radius: 6px; font-size: 11px; outline: none; padding: 2px 0; text-align: center; }
 
         .scroll-area { flex: 1; padding: 30px 0; width: 100%; }
-        .content-wrap { max-width: 80%; margin: 0 auto; width: 100%; padding-bottom: 100px; }
+        .content-wrap { max-width: 80%; margin: 0 auto; width: 100%; padding-bottom: 60vh; }
         #scroll-top-btn {
             position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: var(--white);
             border: 1px solid var(--border); border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -77,7 +82,8 @@
         .chat-row { display: flex; width: 100%; margin-bottom: 10px; align-items: flex-end; gap: 10px; }
         .chat-left { justify-content: flex-start; }
 
-        .avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; color: white; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; color: white; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.1s; }
+        .avatar:hover { transform: scale(1.05); }
         .avatar-E { background-color: #8ab4f8; } 
         .avatar-BF { background-color: #81c995; } 
         .avatar-S { background-color: #f48fb1; } 
@@ -90,14 +96,14 @@
 
         .card.active-play, .card.playing { border-color: var(--primary) !important; box-shadow: 0 4px 12px rgba(66, 133, 244, 0.25) !important; background-color: #fff !important; }
 
-        .bubble-header { display: flex; justify-content: flex-start; align-items: center; width: 100%; margin-bottom: 4px; gap: 6px; }
+        .bubble-header { display: flex; justify-content: flex-start; align-items: center; width: 100%; margin-bottom: 4px; gap: 4px; }
 
         .speaker-name { font-size: 13px; font-weight: 800; opacity: 0.85; }
         .name-E { color: #174ea6; }
         .name-BF { color: #0d652d; }
         .name-S { color: #b0120a; }
 
-        .play-btn { width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; background-size: contain; background-repeat: no-repeat; opacity: 0.8; }
+        .play-btn { width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; background-size: contain; background-repeat: no-repeat; opacity: 0.8; margin-top: 1px; }
         .playing .play-btn { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234285f4'%3E%3Cpath d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/%3E%3C/svg%3E"); }
         .card:not(.playing) .play-btn { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23777'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E"); }
 
@@ -146,8 +152,20 @@
 
                 <div class="practice-bar">
                     <div class="left-controls">
-                        <span id="global-status-icon" onclick="toggleAutoPlayAll(document.querySelector('.section-title'))">▶️</span>
-                        <div class="switch-box"><span>연습</span><label class="switch"><input type="checkbox" id="shadow-mode" onchange="syncSettings('shadow', this.checked)"><span class="slider"></span></label></div>
+                        <!-- 재생 및 건너뛰기 버튼 -->
+                        <span id="global-status-icon" onclick="toggleAutoPlayAll()">▶️</span>
+                        <span id="global-skip-icon" onclick="skipNext()" style="margin-left:-2px;">⏭️</span>
+                        
+                        <div class="switch-box" style="margin-left: 5px;">
+                            <label class="text-toggle">
+                                <input type="checkbox" id="shadow-mode" onchange="syncSettings('shadow', this.checked)">
+                                <div class="text-toggle-slider"></div>
+                                <div class="text-toggle-texts">
+                                    <span class="txt-left">듣기</span>
+                                    <span class="txt-right">섀도잉</span>
+                                </div>
+                            </label>
+                        </div>
                         <div class="switch-box">
                             <span>반복</span>
                             <select id="repeat-count" onchange="syncSettings('repeat', this.value)">
@@ -164,11 +182,24 @@
         </header>
 
         <div class="floating-menu" id="floating-menu">
-            <div class="float-item"><span id="float-play-icon" style="font-size: 20px; cursor:pointer;" onclick="toggleAutoPlayAll(document.querySelector('.section-title'))">▶️</span></div>
+            <!-- 플로팅 메뉴에도 재생/건너뛰기 나란히 배치 -->
+            <div class="float-item" style="flex-direction: row; justify-content: center; gap: 10px;">
+                <span id="float-play-icon" style="font-size: 20px; cursor:pointer;" onclick="toggleAutoPlayAll()">▶️</span>
+                <span id="float-skip-icon" style="font-size: 20px; cursor:pointer;" onclick="skipNext()">⏭️</span>
+            </div>
             <div class="float-item"><span id="float-count-label" style="font-size:11px; font-weight:800; color:var(--primary);"></span></div>
             <div class="float-item"><span class="float-label">반복</span><select id="float-repeat-count" class="float-select" onchange="syncSettings('repeat', this.value)"><option value="1">1</option><option value="3" selected>3</option><option value="5">5</option></select></div>
             <div class="float-item"><span class="float-label">배속</span><select id="float-speed" class="float-select" onchange="setSpeed(parseFloat(this.value), null)"><option value="0.5">0.5</option><option value="0.7">0.7</option><option value="1.0" selected>1.0</option></select></div>
-            <div class="float-item"><span class="float-label">연습</span><label class="switch"><input type="checkbox" id="float-shadow-mode" onchange="syncSettings('shadow', this.checked)"><span class="slider"></span></label></div>
+            <div class="float-item">
+                <label class="text-toggle">
+                    <input type="checkbox" id="float-shadow-mode" onchange="syncSettings('shadow', this.checked)">
+                    <div class="text-toggle-slider"></div>
+                    <div class="text-toggle-texts">
+                        <span class="txt-left">듣기</span>
+                        <span class="txt-right">섀도잉</span>
+                    </div>
+                </label>
+            </div>
             <button class="tab-btn" style="margin-top: 10px; width: 38px; height: 28px;" onclick="toggleMiniMode(false)"><<</button>
         </div>
 
@@ -181,215 +212,225 @@
 
     <script>
         const studyData = {
-            title: "Emily in Paris | 💬",
+            title: "Emily in Paris | Crazy News 💬",
             audio: "audio.wav",
             sentences: [
                 {
                     speaker: 'E',
-                    start: 0.000, end: 0.480,
+                    start: 0.000, end: 0.450,
                     ipa: "/haɪ beɪb/",
                     trans: "안녕 자기야.",
                     chunks: [
-                        { text: "Hi, babe", s: 0.000, e: 0.480 }
+                        { text: "Hi, Babe!", s: 0.000, e: 0.450 }
                     ]
                 },
                 {
                     speaker: 'BF',
-                    start: 0.480, end: 0.710,
+                    start: 0.500, end: 1.290,
                     ipa: "/heɪ/",
                     trans: "안녕.",
                     chunks: [
-                        { text: "Hey,", s: 0.480, e: 0.710 }
+                        { text: "Hey!", s: 0.500, e: 1.290 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 4.530, end: 5.280,
+                    start: 4.500, end: 5.480,
                     ipa: "/wʌt ˈhæpənd?/",
                     trans: "무슨 일 있어?",
                     chunks: [
-                        { text: "What happened?", s: 4.530, e: 5.280 }
+                        { text: "What happened?", s: 4.500, e: 5.480 }
                     ]
                 },
                 {
                     speaker: 'BF',
-                    start: 6.160, end: 7.530,
+                    start: 6.140, end: 7.400,
                     ipa: "/kæn wiː ɡɛt ə ˈkʌpəl əv bɪərz hɪər, pliːz/",
                     trans: "여기 맥주 두 잔만 주시겠어요?",
                     chunks: [
-                        { text: "Can we get a", s: 6.160, e: 6.460 },
-                        { text: "couple of beers here, please?", s: 6.460, e: 7.530 }
+                        { text: "Can we get a", s: 6.140, e: 6.460 },
+                        { text: "couple of beers here, please?", s: 6.460, e: 7.400 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 7.530, end: 10.250,
+                    start: 7.400, end: 10.280,
                     ipa: "/oʊ, waɪt waɪn, ˈæktʃuəli. ˈɛniˌθɪŋ frɛntʃ, ɪf juː hæv ɪt./",
                     trans: "아, 사실 화이트 와인으로 할게요. 프랑스산이면 뭐든 좋아요, 있다면요.",
                     chunks: [
-                        { text: "Oh, White Wine, actually", s: 7.530, e: 8.710 },
-                        { text: "Anything French,", s: 8.710, e: 9.600 },
-                        { text: "if you have it.", s: 9.600, e: 10.250 }
+                        { text: "Oh, white wine, actually.", s: 7.400, e: 8.710 },
+                        { text: "Anything French, if you have it.", s: 8.710, e: 10.280 }
                     ]
                 },
                 {
                     speaker: 'S',
-                    start: 10.250, end: 10.640,
+                    start: 10.280, end: 10.720,
                     ipa: "/fɔːr ʃʊr/",
                     trans: "물론이죠.",
                     chunks: [
-                        { text: "For sure.", s: 10.250, e: 10.640 }
+                        { text: "for Sure.", s: 10.280, e: 10.720 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 10.640, end: 14.500,
+                    start: 10.720, end: 14.500,
                     ipa: "/aɪ hæv sʌm ˈkreɪzi nuːz. ˈmædəlɪnz ˈprɛɡnənt/",
                     trans: "나 정말 엄청난 소식이 있어. 매들린이 임신했대.",
                     chunks: [
-                        { text: "I have some crazy news.", s: 10.640, e: 13.190 },
+                        { text: "I have some crazy news.", s: 10.720, e: 13.190 },
                         { text: "Madeline's pregnant.", s: 13.190, e: 14.500 }
                     ]
                 },
                 {
                     speaker: 'BF',
-                    start: 14.500, end: 15.150,
+                    start: 14.500, end: 15.160,
                     ipa: "/ˈmædəlɪn?/",
                     trans: "매들린이?",
                     chunks: [
-                        { text: "Madeline?", s: 14.500, e: 15.150 }
+                        { text: "Madeline?", s: 14.500, e: 15.160 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 15.150, end: 15.700,
+                    start: 15.160, end: 15.730,
                     ipa: "/mhm/",
                     trans: "응.",
                     chunks: [
-                        { text: "Mm-hmm", s: 15.150, e: 15.700 }
+                        { text: "Mm-hmm", s: 15.160, e: 15.730 }
                     ]
                 },
                 {
                     speaker: 'BF',
-                    start: 15.700, end: 18.930,
+                    start: 15.730, end: 19.010,
                     ipa: "/laɪk, jʊər bɒs, ˈmædəlɪn? waʊ! soʊ huːz ðə dæd?/",
                     trans: "그니까, 네 상사 매들린 말이야? 와우! 그럼 아빠는 누구래?",
                     chunks: [
-                        { text: "Like, your boss, Madeline?", s: 15.700, e: 17.440 },
-                        { text: "Wow!", s: 17.440, e: 17.760 },
-                        { text: "So", s: 17.760, e: 18.110 },
-                        { text: "who's the dad?", s: 18.110, e: 18.930 }
+                        { text: "Like, your boss, Madeline?", s: 15.730, e: 17.470 },
+                        { text: "Wow! So, who's the dad?", s: 17.470, e: 19.010 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 18.930, end: 21.180,
+                    start: 19.010, end: 21.190,
                     ipa: "/oʊ, wɛl, ðɛr ɑːr ə fjuː ˈkændɪdeɪts/",
                     trans: "아, 글쎄, 후보가 몇 명 있나 봐.",
                     chunks: [
-                        { text: "Oh, well, there are a few", s: 18.930, e: 19.830 },
-                        { text: "candidates.", s: 19.830, e: 21.180 }
+                        { text: "Oh, well, there are", s: 19.010, e: 19.590 },
+                        { text: "a few candidates.", s: 19.590, e: 21.190 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 21.180, end: 26.570,
+                    start: 21.190, end: 26.690,
                     ipa: "/bʌt naʊ ðæt ʃiːz ˈprɛɡnənt, ʃiːz dɪˈsaɪdɪd ʃiːz nɑːt ˈɡɒnə teɪk ðə dʒɒb ɪn ˈpærɪs/",
                     trans: "근데 임신하게 되면서, 파리로 가는 자리를 맡지 않기로 결정했대.",
                     chunks: [
-                        { text: "But now", s: 21.180, e: 21.620 },
-                        { text: "that she's pregnant,", s: 21.620, e: 22.430 },
-                        { text: "she's decided she's not", s: 22.430, e: 24.180 },
-                        { text: "gonna take the job in Paris.", s: 24.180, e: 26.570 }
+                        { text: "But now that she's pregnant,", s: 21.190, e: 22.480 },
+                        { text: "she's decided", s: 22.480, e: 23.190 },
+                        { text: "she's not gonna take the job in Paris.", s: 23.190, e: 26.690 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 26.570, end: 31.000,
+                    start: 26.690, end: 31.040,
                     ipa: "/soʊ, ðeɪ æskt miː ɪf aɪ wʊd teɪk ðə dʒɒb fɔːr ə jɪər/",
                     trans: "그래서 그 자리 나보고 1년 동안 맡아볼 생각이 있냐고 묻더라고.",
                     chunks: [
-                        { text: "So, they asked me if-", s: 26.570, e: 27.950 },
-                        { text: "I would take the job", s: 27.950, e: 29.630 },
-                        { text: "for a year.", s: 29.630, e: 31.000 }
+                        { text: "So, they asked me if-", s: 26.690, e: 27.930 },
+                        { text: "I would take the job", s: 27.930, e: 29.560 },
+                        { text: "for a year.", s: 29.560, e: 31.040 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 31.000, end: 36.110,
+                    start: 31.040, end: 35.720,
                     ipa: "/ðeɪ sɛd ðæt ɪf aɪ dɪd ðæt, ðeɪd ˌɡærənˈtiː miː ˈsiːnjər brænd ˈmænɪdʒər wɛn aɪm bæk/",
                     trans: "내가 그렇게 하면 돌아왔을 때 시니어 브랜드 매니저 자리를 보장해 주겠대.",
                     chunks: [
-                        { text: "They said that if I did", s: 31.000, e: 32.040 },
-                        { text: "that they'd guarantee me", s: 32.040, e: 32.890 },
-                        { text: "senior brand manager", s: 32.890, e: 33.660 },
-                        { text: "when I'm back.", s: 33.660, e: 36.110 }
-                    ]
-                },
-                {
-                    speaker: 'E',
-                    start: 36.110, end: 40.080,
-                    ipa: "/soʊ ðə əˈpɑːrtmənt ðɛr ɪz ɔːlˈrɛdi ɔːl sɛt ʌp, ænd ðɛrz ə ˌriːloʊˈkeɪʃən ˈboʊnəs/",
-                    trans: "현지 아파트도 이미 다 마련되어 있고, 해외 정착 보너스도 나와.",
-                    chunks: [
-                        { text: "So the apartment there is", s: 36.110, e: 36.920 },
-                        { text: "already all set up,", s: 36.920, e: 38.050 },
-                        { text: "and", s: 38.050, e: 38.390 },
-                        { text: "there's a", s: 38.390, e: 38.620 },
-                        { text: "relocation bonus.", s: 38.620, e: 40.080 }
+                        { text: "They said that", s: 31.040, e: 31.500 },
+                        { text: "if I did that,", s: 31.500, e: 32.150 },
+                        { text: "they'd guarantee me", s: 32.150, e: 32.840 },
+                        { text: "senior brand manager", s: 32.840, e: 33.650 },
+                        { text: "when I'm back.", s: 33.650, e: 35.720 }
                     ]
                 },
                 {
                     speaker: 'BF',
-                    start: 40.080, end: 42.970,
+                    start: 35.720, end: 36.100,
+                    ipa: "/hʌ/",
+                    trans: "음?",
+                    chunks: [
+                        { text: "Huh", s: 35.720, e: 36.100 },
+                    ]
+                },
+                {
+                    speaker: 'E',
+                    start: 36.100, end: 38.070,
+                    ipa: "/hʌ soʊ ðə əˈpɑːrtmənt ðɛr ɪz ɔːlˈrɛdi ɔːl sɛt ʌp,",
+                    trans: "현지 아파트도 이미 다 마련되어 있고,",
+                    chunks: [
+                        { text: "So, the apartment", s: 36.100, e: 36.600 },
+                        { text: "there is", s: 36.600, e: 36.910 },
+                        { text: "already all set up,", s: 36.910, e: 38.070 }
+                    ]
+                },
+                {
+                    speaker: 'E',
+                    start: 38.070, end: 40.070,
+                    ipa: "/ænd ðɛrz ə ˌriːloʊˈkeɪʃən ˈboʊnəs/",
+                    trans: "해외 정착 보너스도 나와.",
+                    chunks: [
+                        { text: "and there's a", s: 38.070, e: 38.590 },
+                        { text: "relocation bonus.", s: 38.590, e: 40.070 }
+                    ]
+                },
+                {
+                    speaker: 'BF',
+                    start: 40.070, end: 43.010,
                     ipa: "/weɪt, jʊər ˈsɪriəs/",
                     trans: "잠깐만, 너 지금 진심이야?",
                     chunks: [
-                        { text: "Wait,", s: 40.080, e: 41.250 },
-                        { text: "you're serious?", s: 41.250, e: 42.970 }
+                        { text: "Wait, you're serious?", s: 40.070, e: 43.010 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 42.970, end: 46.710,
+                    start: 43.010, end: 46.730,
                     ipa: "/aɪ noʊ ɪts ˈkreɪzi, bʌt wɛn wɪl wiː ɡɛt ə tʃæns laɪk ðɪs/",
                     trans: "말도 안 되는 거 아는데, 우리한테 이런 기회가 언제 또 오겠어?",
                     chunks: [
-                        { text: "I know", s: 42.970, e: 43.210 },
-                        { text: "it's crazy,", s: 43.210, e: 44.070 },
-                        { text: "but", s: 44.070, e: 44.790 },
-                        { text: "when will we get a", s: 44.790, e: 45.360 },
-                        { text: "chance like this?", s: 45.360, e: 46.710 }
+                        { text: "I know it's crazy,", s: 43.010, e: 44.070 },
+                        { text: "but when will we get a", s: 44.070, e: 45.380 },
+                        { text: "chance like this?", s: 45.380, e: 46.730 }
                     ]
                 },
                 {
                     speaker: 'BF',
-                    start: 46.710, end: 48.350,
+                    start: 46.730, end: 48.450,
                     ipa: "/juː doʊnt spiːk frɛntʃ/",
                     trans: "너 불어 한마디도 못 하잖아.",
                     chunks: [
-                        { text: "You don't speak French", s: 46.710, e: 48.350 }
+                        { text: "You don't speak French.", s: 46.730, e: 48.450 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 48.350, end: 52.460,
+                    start: 48.450, end: 52.730,
                     ipa: "/feɪk ɪt tɪl juː meɪk ɪt/",
                     trans: "될 때까지 아는 척 버텨보는 거지 뭐!",
                     chunks: [
-                        { text: "Fake it", s: 48.350, e: 48.730 },
-                        { text: "till you make it.", s: 48.730, e: 52.460 }
+                        { text: "Fake it till you make it!", s: 48.450, e: 52.730 }
                     ]
                 },
                 {
-                    speaker: 'BF',
-                    start: 52.460, end: 55.820,
-                    ipa: "/oʊ, aɪm nɑːt ˈwɜːrid. ɪts ðə frɛntʃ huː ʃʊd biː ˈwɜːrid/",
+                    speaker: 'E',
+                    start: 52.730, end: 55.820,
+                    ipa: "/aɪm nɑːt ˈwɜːrid. ɪts ðə frɛntʃ huː ʃʊd biː ˈwɜːrid/",
                     trans: "난 전혀 걱정 안 돼. 걱정해야 할 건 오히려 프랑스인들이지.",
                     chunks: [
-                        { text: "Oh, I'm not worried.", s: 52.460, e: 53.970 },
-                        { text: "It's the French", s: 53.970, e: 54.510 },
-                        { text: "who should be worried.", s: 54.510, e: 55.820 }
+                        { text: "I'm not worried.", s: 52.730, e: 54.010 },
+                        { text: "It's the French", s: 54.010, e: 54.570 },
+                        { text: "who should be worried.", s: 54.570, e: 55.820 }
                     ]
                 }
             ]
@@ -401,7 +442,7 @@
               statusIcon = document.getElementById('global-status-icon'),
               topBtn = document.getElementById('scroll-top-btn');
         
-        let isShadowing = false, currentRepeat = 0, stopTime = 0, isContinuousPlay = false;
+        let isShadowing = false, currentRepeat = 0, stopTime = 0, isAutoPlaying = false, isContinuousPlay = false;
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 150) topBtn.style.display = 'flex';
@@ -423,11 +464,13 @@
             }
         }
 
+        // 스크롤 시 화면 상단으로 위치 고정
         function scrollToActive(el) {
             if (!el) return;
             const elRect = el.getBoundingClientRect();
+            const headerHeight = document.querySelector('.sticky-header').offsetHeight || 80;
             window.scrollTo({ 
-                top: elRect.top + window.scrollY - (window.innerHeight * 0.25), 
+                top: elRect.top + window.scrollY - headerHeight - 20, 
                 behavior: 'smooth' 
             });
         }
@@ -440,7 +483,8 @@
         }
 
         function loadDefaultContent() {
-            let html = `<div class="section-title" onclick="toggleAutoPlayAll(this)">${studyData.title}</div>`;
+            // 제목 부분: 클릭 시 전체 연속 재생
+            let html = `<div class="section-title" onclick="toggleContinuousPlay()">${studyData.title}</div>`;
             
             studyData.sentences.forEach(item => {
                 const chunks = item.chunks.map(c => `<span class="chunk" data-s="${c.s}" data-e="${c.e}">${c.text}</span>`).join(' ');
@@ -454,8 +498,9 @@
 
                 const header = `
                     <div class="bubble-header">
-                        <span class="speaker-name ${nameClass}">${speakerName}</span>
+                        <span class="speaker-name ${nameClass}">[ ${speakerName}</span>
                         <div class="play-btn"></div>
+                        <span class="speaker-name ${nameClass}">]</span>
                     </div>`;
                 
                 html += `
@@ -488,8 +533,7 @@
         function toggleDisplay(sel, btn) { btn.classList.toggle('active'); applyButtonState(sel, btn.id); }
 
         displayArea.addEventListener('click', (e) => {
-            const card = e.target.closest('.card'), chunk = e.target.closest('.chunk'), playBtn = e.target.closest('.play-btn');
-            
+            const chunk = e.target.closest('.chunk');
             if (chunk) { 
                 stopAll(); 
                 chunk.classList.add('active'); 
@@ -501,23 +545,86 @@
                 return; 
             }
             
-            if (playBtn || card) {
-                const targetCard = card;
-                if (targetCard.classList.contains('playing')) { player.pause(); targetCard.classList.remove('playing'); } 
-                else { stopAll(); targetCard.classList.add('playing', 'active-play'); scrollToActive(targetCard); playPart(parseFloat(targetCard.dataset.start), parseFloat(targetCard.dataset.end)); }
+            // 아바타, 플레이 버튼, 혹은 카드를 누르면 해당 문장 재생
+            const avatar = e.target.closest('.avatar');
+            const card = e.target.closest('.card');
+            const playBtn = e.target.closest('.play-btn');
+
+            let targetCard = card;
+            if (avatar) {
+                targetCard = avatar.closest('.chat-row').querySelector('.card');
+            }
+
+            if (playBtn || targetCard) {
+                if (targetCard.classList.contains('playing')) { 
+                    player.pause(); 
+                    targetCard.classList.remove('playing'); 
+                } else { 
+                    stopAll(); 
+                    targetCard.classList.add('playing', 'active-play'); 
+                    scrollToActive(targetCard); 
+                    playPart(parseFloat(targetCard.dataset.start), parseFloat(targetCard.dataset.end)); 
+                }
             }
         });
 
-        function toggleAutoPlayAll(titleEl) {
-            if (isContinuousPlay) {
+        // 헤더 버튼 클릭 시: 설정에 맞춘 문장 단위 순차 자동 재생
+        function toggleAutoPlayAll() {
+            if (isAutoPlaying) {
                 stopAll();
             } else { 
                 stopAll(); 
-                isContinuousPlay = true; 
+                isAutoPlaying = true; 
                 statusIcon.innerText = document.getElementById('float-play-icon').innerText = "⏸️";
-                stopTime = 0; 
-                player.currentTime = 0; 
-                player.play(); 
+
+                const first = displayArea.querySelector('.card'); 
+                if (first) { 
+                    first.classList.add('active-play', 'playing');
+                    scrollToActive(first);
+                    playPart(parseFloat(first.dataset.start), parseFloat(first.dataset.end));
+                } 
+            }
+        }
+
+        // 제목 텍스트 클릭 시: 음원 파일 전체 연속 재생
+        function toggleContinuousPlay() {
+            if (isContinuousPlay) {
+                stopAll();
+            } else {
+                stopAll();
+                isContinuousPlay = true;
+                player.currentTime = 0;
+                player.play();
+            }
+        }
+
+        // 건너뛰기 버튼 기능: 다음 문장(카드)으로 넘어가서 재생
+        function skipNext() {
+            clearTimeout(window.shadowTimer);
+            const active = document.querySelector('.card.playing') || document.querySelector('.card.active-play');
+            
+            if (isContinuousPlay) {
+                const ct = player.currentTime;
+                const cards = Array.from(document.querySelectorAll('.card'));
+                let nextCard = cards.find(c => parseFloat(c.dataset.start) > ct + 0.5);
+                if (nextCard) {
+                    player.currentTime = parseFloat(nextCard.dataset.start);
+                }
+                return;
+            }
+
+            if (active) {
+                player.pause();
+                currentRepeat = 0;
+                
+                // 건너뛸 때 재생모드가 켜져있지 않다면 강제 재생 모드 활성화
+                isAutoPlaying = true;
+                statusIcon.innerText = document.getElementById('float-play-icon').innerText = "⏸️";
+                
+                handleNext(active);
+            } else {
+                // 아무것도 재생중이 아니면 처음부터 재생
+                toggleAutoPlayAll();
             }
         }
 
@@ -525,11 +632,9 @@
             clearTimeout(window.shadowTimer); 
             const rate = player.playbackRate;
             
-            // 시작 시간은 항상 0.05초 여유 있게 당겨서 시작
             let startPoint = Math.max(0, s - (0.05 * rate)); 
             let endPoint = e;
 
-            // ★ 원래 길이가 충분히 긴 문장(0.8초 초과)일 때만 끝을 0.15초 앞당겨서 다음 대사 겹침 방지
             if ((e - s) > 0.8) {
                 endPoint = e - (0.15 * rate); 
             }
@@ -541,8 +646,10 @@
 
         function stopAll() { 
             player.pause(); 
-            isContinuousPlay = false; 
+            isAutoPlaying = false; 
+            isContinuousPlay = false;
             statusIcon.innerText = document.getElementById('float-play-icon').innerText = "▶️";
+
             currentRepeat = 0; stopTime = 0; clearTimeout(window.shadowTimer);
             document.getElementById('current-count').innerText = document.getElementById('float-count-label').innerText = '';
             document.querySelectorAll('.playing, .active-play, .chunk.active').forEach(el => {
@@ -551,6 +658,7 @@
         }
 
         player.addEventListener('timeupdate', () => {
+            // 제목 클릭에 의한 전체 재생일 때
             if (isContinuousPlay) {
                 const ct = player.currentTime;
                 const cards = document.querySelectorAll('.card');
@@ -573,26 +681,57 @@
                 } else {
                     document.querySelectorAll('.card.playing').forEach(c => c.classList.remove('playing', 'active-play'));
                 }
-            } else if (stopTime > 0 && player.currentTime >= stopTime) {
+            } 
+            // 설정(듣기/섀도잉)에 맞춘 문장 단위 자동재생 혹은 개별 클릭 재생일 때
+            else if (stopTime > 0 && player.currentTime >= stopTime) {
                 player.pause(); stopTime = 0; 
                 const active = document.querySelector('.card.playing');
                 if (active) { 
-                    if (isShadowing) handleShadowProcess(active); 
-                    else active.classList.remove('playing', 'active-play'); 
+                    handleRepeatProcess(active);
                 }
             }
         });
 
         player.addEventListener('ended', stopAll);
 
-        function handleShadowProcess(el) {
+        function handleRepeatProcess(el) {
             currentRepeat++; 
             const limit = parseInt(document.getElementById('repeat-count').value) || 1, rate = player.playbackRate;
             document.getElementById('current-count').innerText = document.getElementById('float-count-label').innerText = `${currentRepeat} / ${limit}`;
+            
             const duration = (parseFloat(el.dataset.end) - parseFloat(el.dataset.start)) / rate;
-            const waitTime = (duration + 1.5) * 1000;
-            if (currentRepeat < limit) window.shadowTimer = setTimeout(() => playPart(parseFloat(el.dataset.start), parseFloat(el.dataset.end)), waitTime);
-            else { currentRepeat = 0; el.classList.remove('playing', 'active-play'); }
+            const waitTime = isShadowing ? (duration + 1.5) * 1000 : 500; 
+
+            if (currentRepeat < limit) {
+                window.shadowTimer = setTimeout(() => playPart(parseFloat(el.dataset.start), parseFloat(el.dataset.end)), waitTime);
+            } else { 
+                currentRepeat = 0; 
+                if(isAutoPlaying) {
+                    window.shadowTimer = setTimeout(() => handleNext(el), 500); 
+                } else { 
+                    setTimeout(() => {
+                        el.classList.remove('playing', 'active-play'); 
+                        document.getElementById('current-count').innerText = document.getElementById('float-count-label').innerText = '';
+                    }, 500);
+                } 
+            }
+        }
+
+        function handleNext(el) {
+            const all = Array.from(displayArea.querySelectorAll('.card'));
+            const idx = all.indexOf(el); el.classList.remove('playing', 'active-play');
+            
+            // 다음 문장 넘어갈 때 반복 카운트 초기화
+            document.getElementById('current-count').innerText = document.getElementById('float-count-label').innerText = '';
+
+            if (idx < all.length - 1) { 
+                const next = all[idx+1];
+                next.classList.add('active-play', 'playing');
+                scrollToActive(next);
+                window.shadowTimer = setTimeout(() => { 
+                    playPart(parseFloat(next.dataset.start), parseFloat(next.dataset.end));
+                }, 400); 
+            } else stopAll();
         }
 
         function setSpeed(s, btn) { 
