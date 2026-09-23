@@ -39,11 +39,11 @@
         audio { display: none; }
 
         .practice-bar { background: #fff; padding: 10px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); width: 100%; height: 50px; margin-top: 10px; }
-        .left-controls { display: flex; align-items: center; gap: 12px; }
+        .left-controls { display: flex; align-items: center; gap: 8px; }
         
-        #global-status-icon, #global-skip-icon { font-size: 18px; text-align: center; cursor: pointer; transition: 0.2s; }
+        #global-prev-icon, #global-status-icon, #global-skip-icon { font-size: 18px; text-align: center; cursor: pointer; transition: 0.2s; }
         
-        .switch-box { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: bold; white-space: nowrap; }
+        .switch-box { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: bold; white-space: nowrap; margin-left: 5px; }
         
         .text-toggle { position: relative; display: flex; align-items: center; width: 120px; height: 34px; background-color: #e2e3e5; border-radius: 17px; cursor: pointer; padding: 2px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); margin: 0; }
         .text-toggle input { display: none; }
@@ -108,11 +108,11 @@
         .card:not(.playing) .play-btn { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23777'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E"); }
 
         .text-content { flex: 1; display: flex; flex-direction: column; width: 100%; }
-        .sentence-eng { font-size: 18px; font-weight: 700; line-height: 1.4; margin-bottom: 2px; order: 1; color: #202124; }
-        .ipa-text { color: #7f8c8d; font-size: 14px; margin-bottom: 2px; order: 2; }
-        .trans-text { color: #95a5a6; font-size: 13.5px; order: 3; font-weight: 600; }
+        .sentence-eng { font-size: 18px; font-weight: 700; line-height: 1.45; margin-bottom: 2px; order: 1; color: #202124; word-break: break-word; }
+        .ipa-text { color: #7f8c8d; font-size: 14px; margin-bottom: 2px; order: 2; word-break: break-word; }
+        .trans-text { color: #95a5a6; font-size: 13.5px; order: 3; font-weight: 600; word-break: keep-all; }
 
-        .chunk { pointer-events: auto; cursor: pointer; border-radius: 6px; padding: 2px 4px; display: inline-block; transition: background 0.1s; }
+        .chunk { pointer-events: auto; cursor: pointer; border-radius: 4px; padding: 2px 4px; display: inline; line-height: 1.5; transition: background 0.1s; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
         .chunk:hover { background: rgba(66, 133, 244, 0.15); }
         .chunk.active { background: rgba(66, 133, 244, 0.2) !important; color: #174ea6 !important; }
 
@@ -152,11 +152,12 @@
 
                 <div class="practice-bar">
                     <div class="left-controls">
-                        <!-- 재생 및 건너뛰기 버튼 -->
+                        <!-- 이전, 재생, 다음 버튼 배치 -->
+                        <span id="global-prev-icon" onclick="skipPrev()">⏮️</span>
                         <span id="global-status-icon" onclick="toggleAutoPlayAll()">▶️</span>
-                        <span id="global-skip-icon" onclick="skipNext()" style="margin-left:-2px;">⏭️</span>
+                        <span id="global-skip-icon" onclick="skipNext()">⏭️</span>
                         
-                        <div class="switch-box" style="margin-left: 5px;">
+                        <div class="switch-box">
                             <label class="text-toggle">
                                 <input type="checkbox" id="shadow-mode" onchange="syncSettings('shadow', this.checked)">
                                 <div class="text-toggle-slider"></div>
@@ -182,8 +183,9 @@
         </header>
 
         <div class="floating-menu" id="floating-menu">
-            <!-- 플로팅 메뉴에도 재생/건너뛰기 나란히 배치 -->
-            <div class="float-item" style="flex-direction: row; justify-content: center; gap: 10px;">
+            <!-- 플로팅 메뉴 이전/재생/다음 나란히 배치 -->
+            <div class="float-item" style="flex-direction: row; justify-content: center; gap: 8px;">
+                <span id="float-prev-icon" style="font-size: 20px; cursor:pointer;" onclick="skipPrev()">⏮️</span>
                 <span id="float-play-icon" style="font-size: 20px; cursor:pointer;" onclick="toggleAutoPlayAll()">▶️</span>
                 <span id="float-skip-icon" style="font-size: 20px; cursor:pointer;" onclick="skipNext()">⏭️</span>
             </div>
@@ -212,34 +214,34 @@
 
     <script>
         const studyData = {
-            title: "Emily in Paris | Crazy News 💬",
+            title: "Emily in Paris 💬",
             audio: "audio.wav",
             sentences: [
                 {
                     speaker: 'E',
-                    start: 0.000, end: 0.450,
+                    start: 0.000, end: 0.370,
                     ipa: "/haɪ beɪb/",
                     trans: "안녕 자기야.",
                     chunks: [
-                        { text: "Hi, Babe!", s: 0.000, e: 0.450 }
+                        { text: "Hi, Babe!", s: 0.000, e: 0.370 }
                     ]
                 },
                 {
                     speaker: 'BF',
-                    start: 0.500, end: 0.880,
+                    start: 0.540, end: 1.290,
                     ipa: "/heɪ/",
                     trans: "안녕.",
                     chunks: [
-                        { text: "Hey!", s: 0.500, e: 0.880 }
+                        { text: "Hey!", s: 0.540, e: 1.290 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 4.550, end: 5.160,
+                    start: 4.550, end: 5.280,
                     ipa: "/wʌt ˈhæpənd?/",
                     trans: "무슨 일 있어?",
                     chunks: [
-                        { text: "What happened?", s: 4.550, e: 5.160 }
+                        { text: "What happened?", s: 4.550, e: 5.280 }
                     ]
                 },
                 {
@@ -264,185 +266,158 @@
                 },
                 {
                     speaker: 'S',
-                    start: 10.280, end: 10.720,
+                    start: 10.280, end: 10.520,
                     ipa: "/fɔːr ʃʊr/",
                     trans: "물론이죠.",
                     chunks: [
-                        { text: "for Sure.", s: 10.280, e: 10.720 }
+                        { text: "for Sure.", s: 10.280, e: 10.520 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 10.720, end: 11.980,
-                    ipa: "/aɪ hæv sʌm ˈkreɪzi nuːz./",
-                    trans: "나 정말 엄청난 소식이 있어.",
+                    start: 10.720, end: 14.300,
+                    ipa: "/aɪ hæv sʌm ˈkreɪzi nuːz. ˈmædəlɪnz ˈprɛɡnənt/",
+                    trans: "나 정말 엄청난 소식이 있어. 매들린이 임신했대.",
                     chunks: [
-                        { text: "I have some crazy news.", s: 10.720, e: 11.980 }
-                    ]
-                },
-                {
-                    speaker: 'E',
-                    start: 13.190, end: 14.340,
-                    ipa: "/ˈmædəlɪnz ˈprɛɡnənt/",
-                    trans: "매들린이 임신했대.",
-                    chunks: [
-                        { text: "Madeline's pregnant.", s: 13.190, e: 14.340 }
+                        { text: "I have some crazy news.", s: 10.720, e: 13.190 },
+                        { text: "Madeline's pregnant.", s: 13.190, e: 14.300 }
                     ]
                 },
                 {
                     speaker: 'BF',
-                    start: 14. 500, end: 15.090,
+                    start: 14.500, end: 14.800,
                     ipa: "/ˈmædəlɪn?/",
                     trans: "매들린이?",
                     chunks: [
-                        { text: "Madeline?", s: 14.500, e: 15.090 }
+                        { text: "Madeline?", s: 14.500, e: 14.800 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 15.160, end: 15.730,
+                    start: 15.160, end: 15.200,
                     ipa: "/mhm/",
                     trans: "응.",
                     chunks: [
-                        { text: "Mm-hmm", s: 15.160, e: 15.730 }
+                        { text: "Mm-hmm", s: 15.160, e: 15.200 }
                     ]
                 },
                 {
                     speaker: 'BF',
-                    start: 15.730, end: 16.740,
-                    ipa: "/laɪk, jʊər bɒs, ˈmædəlɪn?/",
-                    trans: "그니까, 네 상사 매들린 말이야?,
+                    start: 15.730, end: 19.010,
+                    ipa: "/laɪk, jʊər bɒs, ˈmædəlɪn? waʊ! soʊ huːz ðə dæd?/",
+                    trans: "그니까, 네 상사 매들린 말이야? 와우! 그럼 아빠는 누구래?",
                     chunks: [
-                        { text: "Like, your boss, Madeline?", s: 15.730, e: 16.740 }
-                    ]
-                },
-                {
-                    speaker: 'BF',
-                    start: 17.470, end: 18.780,
-                    ipa: "/waʊ! soʊ huːz ðə dæd?/",
-                    trans: "와우! 그럼 아빠는 누구래?",
-                    chunks: [
-                        { text: "Wow! So, who's the dad?", s: 17.470, e: 18.780 }
+                        { text: "Like, your boss, Madeline?", s: 15.730, e: 17.470 },
+                        { text: "Wow! So, who's the dad?", s: 17.470, e: 19.010 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 19.010, end: 19.830,
+                    start: 19.010, end: 20.500,
                     ipa: "/oʊ, wɛl, ðɛr ɑːr ə fjuː ˈkændɪdeɪts/",
                     trans: "아, 글쎄, 후보가 몇 명 있나 봐.",
                     chunks: [
-                        { text: "Oh, well, there are a few candidates.", s: 19.010, e: 19.830 }
+                        { text: "Oh, well, there are", s: 19.010, e: 19.590 },
+                        { text: "a few candidates.", s: 19.590, e: 20.500 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 21.190, end: 25.410,
+                    start: 21.190, end: 25.490,
                     ipa: "/bʌt naʊ ðæt ʃiːz ˈprɛɡnənt, ʃiːz dɪˈsaɪdɪd ʃiːz nɑːt ˈɡɒnə teɪk ðə dʒɒb ɪn ˈpærɪs/",
                     trans: "근데 임신하게 되면서, 파리로 가는 자리를 맡지 않기로 결정했대.",
                     chunks: [
-                        { text: "But now that she's pregnant,", s: 21.190, e: 22.48 0 },
-                        { text: "she's decided", s: 22.480, e: 23.110 },
-                        { text: "she's not gonna take the job in Paris.", s: 23.120, e: 25.410 }
+                        { text: "But now that she's pregnant,", s: 21.190, e: 22.480 },
+                        { text: "she's decided", s: 22.480, e: 23.190 },
+                        { text: "she's not gonna take the job in Paris", s: 23.190, e: 25.490 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 26.690, end: 30.190,
+                    start: 26.690, end: 30.040,
                     ipa: "/soʊ, ðeɪ æskt miː ɪf aɪ wʊd teɪk ðə dʒɒb fɔːr ə jɪər/",
                     trans: "그래서 그 자리 나보고 1년 동안 맡아볼 생각이 있냐고 묻더라고.",
                     chunks: [
                         { text: "So, they asked me if-", s: 26.690, e: 27.930 },
-                        { text: "I would take the job for a year.", s: 27.930, e: 30.190 }
+                        { text: "I would take the job", s: 27.930, e: 29.560 },
+                        { text: "for a year.", s: 29.560, e: 30.040 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 31.040, end: 34.180,
+                    start: 31.040, end: 34.720,
                     ipa: "/ðeɪ sɛd ðæt ɪf aɪ dɪd ðæt, ðeɪd ˌɡærənˈtiː miː ˈsiːnjər brænd ˈmænɪdʒər wɛn aɪm bæk/",
                     trans: "내가 그렇게 하면 돌아왔을 때 시니어 브랜드 매니저 자리를 보장해 주겠대.",
                     chunks: [
-                        { text: "They said that if I", s: 31.040, e: 31.810 },                       
-                        { text: "did that, they'd guarantee me", s: 31.810, e: 32.840 },
+                        { text: "They said that", s: 31.040, e: 31.560 },
+                        { text: "if I did that,", s: 31.560, e: 32.150 },
+                        { text: "they'd guarantee me", s: 32.150, e: 32.840 },
                         { text: "senior brand manager", s: 32.840, e: 33.650 },
-                        { text: "when I'm back.", s: 33.650, e: 34.180 }
+                        { text: "when I'm back.", s: 33.650, e: 34.720 }
                     ]
                 },
                 {
-                    speaker: 'BF',
-                    start: 35.720, end: 36.100,
-                    ipa: "/hʌ/",
-                    trans: "음?",
+                    speaker: 'E',
+                    start: 35.720, end: 39.470,
+                    ipa: "/hʌ soʊ ðə əˈpɑːrtmənt ðɛr ɪz ɔːlˈrɛdi ɔːl sɛt ʌp, ænd ðɛrz ə ˌriːloʊˈkeɪʃən ˈboʊnəs/",
+                    trans: "현지 아파트도 이미 다 마련되어 있고, 해외 정착 보너스도 나와.",
                     chunks: [
                         { text: "Huh", s: 35.720, e: 36.100 },
-                    ]
-                },
-                {
-                    speaker: 'E',
-                    start: 36.100, end: 37.790,
-                    ipa: "/hʌ soʊ ðə əˈpɑːrtmənt ðɛr ɪz ɔːlˈrɛdi ɔːl sɛt ʌp,",
-                    trans: "현지 아파트도 이미 다 마련되어 있고,",
-                    chunks: [
-                        { text: "So, the apartment there is", s: 36.100, e: 36.910 },
-                        { text: "already all set up,", s: 36.910, e: 37.790 }
-                    ]
-                },
-                {
-                    speaker: 'E',
-                    start: 38.070, end: 39.520,
-                    ipa: "/ænd ðɛrz ə ˌriːloʊˈkeɪʃən ˈboʊnəs/",
-                    trans: "해외 정착 보너스도 나와.",
-                    chunks: [
+                        { text: "So, the apartment", s: 36.100, e: 36.600 },
+                        { text: "there is", s: 36.600, e: 36.910 },
+                        { text: "already all set up,", s: 36.910, e: 38.070 },
                         { text: "and there's a", s: 38.070, e: 38.590 },
-                        { text: "relocation bonus.", s: 38.590, e: 39.520 }
+                        { text: "relocation bonus.", s: 38.590, e: 39.470 }
                     ]
                 },
                 {
                     speaker: 'BF',
-                    start: 40.070, end: 42.090,
+                    start: 40.070, end: 42.010,
                     ipa: "/weɪt, jʊər ˈsɪriəs/",
                     trans: "잠깐만, 너 지금 진심이야?",
                     chunks: [
-                        { text: "Wait, you're serious?", s: 40.070, e: 42.090 }
+                        { text: "Wait, you're serious?", s: 40.070, e: 42.010 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 43.010, end: 46.160,
+                    start: 43.010, end: 45.930,
                     ipa: "/aɪ noʊ ɪts ˈkreɪzi, bʌt wɛn wɪl wiː ɡɛt ə tʃæns laɪk ðɪs/",
                     trans: "말도 안 되는 거 아는데, 우리한테 이런 기회가 언제 또 오겠어?",
                     chunks: [
                         { text: "I know it's crazy,", s: 43.010, e: 44.070 },
-                        { text: "but when will we get a", s: 44.070, e: 45.380 },
-                        { text: "chance like this?", s: 45.380, e: 46.160 }
+                        { text: "but", s: 44.070, e: 44.790 },
+                        { text: "when will we get a", s: 44.790, e: 45.380 },
+                        { text: "chance like this?", s: 45.380, e: 45.930 }
                     ]
                 },
                 {
                     speaker: 'BF',
-                    start: 46.730, end: 48.000,
+                    start: 46.730, end: 48.050,
                     ipa: "/juː doʊnt spiːk frɛntʃ/",
                     trans: "너 불어 한마디도 못 하잖아.",
                     chunks: [
-                        { text: "You don't speak French.", s: 46.730, e: 48.000 }
+                        { text: "You don't speak French.", s: 46.730, e: 48.050 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 48.450, end: 49.590,
+                    start: 48.450, end: 51.030,
                     ipa: "/feɪk ɪt tɪl juː meɪk ɪt/",
                     trans: "될 때까지 아는 척 버텨보는 거지 뭐!",
                     chunks: [
-                        { text: "Fake it till you make it!", s: 48.450, e: 49.590 }
+                        { text: "Fake it till you make it!", s: 48.450, e: 51.030 }
                     ]
                 },
                 {
                     speaker: 'E',
-                    start: 52.730, end: 55.280,
+                    start: 52.730, end: 55.820,
                     ipa: "/aɪm nɑːt ˈwɜːrid. ɪts ðə frɛntʃ huː ʃʊd biː ˈwɜːrid/",
                     trans: "난 전혀 걱정 안 돼. 걱정해야 할 건 오히려 프랑스인들이지.",
                     chunks: [
-                        { text: "I'm not worried.", s: 52.730, e: 53.270 },
+                        { text: "I'm not worried.", s: 52.730, e: 54.010 },
                         { text: "It's the French", s: 54.010, e: 54.570 },
-                        { text: "who should be worried.", s: 54.570, e: 55.280 }
+                        { text: "who should be worried.", s: 54.570, e: 55.820 }
                     ]
                 }
             ]
@@ -610,14 +585,71 @@
             }
         }
 
-        // 건너뛰기 버튼 기능: 다음 문장(카드)으로 넘어가서 재생
-        function skipNext() {
+        // 이전 버튼 기능: 이전 문장(카드)으로 넘어가서 재생
+        function skipPrev() {
             clearTimeout(window.shadowTimer);
-            const active = document.querySelector('.card.playing') || document.querySelector('.card.active-play');
+            const activeCard = document.querySelector('.card.playing') || document.querySelector('.card.active-play');
+            const activeChunk = document.querySelector('.chunk.active');
+            const cards = Array.from(document.querySelectorAll('.card'));
             
             if (isContinuousPlay) {
                 const ct = player.currentTime;
-                const cards = Array.from(document.querySelectorAll('.card'));
+                let idx = cards.findIndex(c => ct >= parseFloat(c.dataset.start) && ct <= parseFloat(c.dataset.end));
+                if (idx === -1) { 
+                    idx = cards.findIndex(c => parseFloat(c.dataset.start) > ct) - 1;
+                }
+                
+                if (idx > 0) {
+                    const startLimit = parseFloat(cards[idx].dataset.start) + 1.5;
+                    if (ct > startLimit) {
+                        player.currentTime = parseFloat(cards[idx].dataset.start);
+                    } else {
+                        player.currentTime = parseFloat(cards[idx - 1].dataset.start);
+                    }
+                } else if (idx === 0) {
+                    player.currentTime = 0;
+                }
+                return;
+            }
+
+            if (activeCard || activeChunk) {
+                player.pause();
+                currentRepeat = 0;
+                
+                let targetEl = activeCard;
+                if(activeChunk && !activeCard) targetEl = activeChunk.closest('.card');
+                
+                let idx = cards.indexOf(targetEl);
+                
+                if (idx > 0) {
+                    isAutoPlaying = true;
+                    statusIcon.innerText = document.getElementById('float-play-icon').innerText = "⏸️";
+                    
+                    if(activeCard) activeCard.classList.remove('playing', 'active-play');
+                    if(activeChunk) activeChunk.classList.remove('active');
+                    
+                    const prev = cards[idx - 1];
+                    prev.classList.add('active-play', 'playing');
+                    scrollToActive(prev);
+                    playPart(parseFloat(prev.dataset.start), parseFloat(prev.dataset.end));
+                } else {
+                    if(activeCard) playPart(parseFloat(activeCard.dataset.start), parseFloat(activeCard.dataset.end));
+                    if(activeChunk) playPart(parseFloat(activeChunk.dataset.s), parseFloat(activeChunk.dataset.e));
+                }
+            } else {
+                toggleAutoPlayAll();
+            }
+        }
+
+        // 건너뛰기 버튼 기능: 다음 문장(카드)으로 넘어가서 재생
+        function skipNext() {
+            clearTimeout(window.shadowTimer);
+            const activeCard = document.querySelector('.card.playing') || document.querySelector('.card.active-play');
+            const activeChunk = document.querySelector('.chunk.active');
+            const cards = Array.from(document.querySelectorAll('.card'));
+            
+            if (isContinuousPlay) {
+                const ct = player.currentTime;
                 let nextCard = cards.find(c => parseFloat(c.dataset.start) > ct + 0.5);
                 if (nextCard) {
                     player.currentTime = parseFloat(nextCard.dataset.start);
@@ -625,17 +657,30 @@
                 return;
             }
 
-            if (active) {
+            if (activeCard || activeChunk) {
                 player.pause();
                 currentRepeat = 0;
                 
-                // 건너뛸 때 재생모드가 켜져있지 않다면 강제 재생 모드 활성화
-                isAutoPlaying = true;
-                statusIcon.innerText = document.getElementById('float-play-icon').innerText = "⏸️";
+                let targetEl = activeCard;
+                if(activeChunk && !activeCard) targetEl = activeChunk.closest('.card');
                 
-                handleNext(active);
+                let idx = cards.indexOf(targetEl);
+                
+                if (idx < cards.length - 1) {
+                    isAutoPlaying = true;
+                    statusIcon.innerText = document.getElementById('float-play-icon').innerText = "⏸️";
+                    
+                    if(activeCard) activeCard.classList.remove('playing', 'active-play');
+                    if(activeChunk) activeChunk.classList.remove('active');
+                    
+                    const next = cards[idx + 1];
+                    next.classList.add('active-play', 'playing');
+                    scrollToActive(next);
+                    playPart(parseFloat(next.dataset.start), parseFloat(next.dataset.end));
+                } else {
+                    stopAll();
+                }
             } else {
-                // 아무것도 재생중이 아니면 처음부터 재생
                 toggleAutoPlayAll();
             }
         }
@@ -697,32 +742,43 @@
             // 설정(듣기/섀도잉)에 맞춘 문장 단위 자동재생 혹은 개별 클릭 재생일 때
             else if (stopTime > 0 && player.currentTime >= stopTime) {
                 player.pause(); stopTime = 0; 
-                const active = document.querySelector('.card.playing');
-                if (active) { 
-                    handleRepeatProcess(active);
+                const activeCard = document.querySelector('.card.playing');
+                const activeChunk = document.querySelector('.chunk.active');
+                if (activeCard || activeChunk) { 
+                    handleRepeatProcess(activeCard, activeChunk);
                 }
             }
         });
 
         player.addEventListener('ended', stopAll);
 
-        function handleRepeatProcess(el) {
+        function handleRepeatProcess(card, chunk) {
             currentRepeat++; 
             const limit = parseInt(document.getElementById('repeat-count').value) || 1, rate = player.playbackRate;
             document.getElementById('current-count').innerText = document.getElementById('float-count-label').innerText = `${currentRepeat} / ${limit}`;
             
-            const duration = (parseFloat(el.dataset.end) - parseFloat(el.dataset.start)) / rate;
+            let s = 0, e = 0;
+            if (chunk) {
+                s = parseFloat(chunk.dataset.s);
+                e = parseFloat(chunk.dataset.e);
+            } else if (card) {
+                s = parseFloat(card.dataset.start);
+                e = parseFloat(card.dataset.end);
+            }
+
+            const duration = (e - s) / rate;
             const waitTime = isShadowing ? (duration + 1.5) * 1000 : 500; 
 
             if (currentRepeat < limit) {
-                window.shadowTimer = setTimeout(() => playPart(parseFloat(el.dataset.start), parseFloat(el.dataset.end)), waitTime);
+                window.shadowTimer = setTimeout(() => playPart(s, e), waitTime);
             } else { 
                 currentRepeat = 0; 
-                if(isAutoPlaying) {
-                    window.shadowTimer = setTimeout(() => handleNext(el), 500); 
+                if(isAutoPlaying && !chunk) {
+                    window.shadowTimer = setTimeout(() => handleNext(card), 500); 
                 } else { 
                     setTimeout(() => {
-                        el.classList.remove('playing', 'active-play'); 
+                        if(card) card.classList.remove('playing', 'active-play'); 
+                        if(chunk) chunk.classList.remove('active');
                         document.getElementById('current-count').innerText = document.getElementById('float-count-label').innerText = '';
                     }, 500);
                 } 
@@ -733,7 +789,6 @@
             const all = Array.from(displayArea.querySelectorAll('.card'));
             const idx = all.indexOf(el); el.classList.remove('playing', 'active-play');
             
-            // 다음 문장 넘어갈 때 반복 카운트 초기화
             document.getElementById('current-count').innerText = document.getElementById('float-count-label').innerText = '';
 
             if (idx < all.length - 1) { 
